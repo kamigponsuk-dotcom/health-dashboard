@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cocoa Block | ช็อกโกแลตแท่งหอมเข้ม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--cocoa:#2a160e;--milk:#8a4b2a;--foil:#e9b44c;--berry:#d6336c;--paper:#fff7ec;--ink:#2a160e;--r:10px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Sarabun',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+h1,h2,h3{font-family:'Kanit',sans-serif;margin:0;line-height:1.15}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--berry);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+/* hero */
+header.hero{background:var(--cocoa);color:var(--paper);padding:56px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.brand{font-family:'Kanit';font-weight:700;color:var(--foil);margin-bottom:18px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800}
+.hero p{max-width:34ch;font-size:1.1rem;opacity:.9;margin:18px 0 28px}
+.btn{display:inline-block;background:var(--berry);color:#fff;font-family:'Kanit';font-weight:700;border:0;border-radius:var(--r);padding:14px 28px;font-size:1.05rem;cursor:pointer;text-decoration:none}
+.btn:hover{background:#b92a5f}
+.btn[disabled]{opacity:.6;cursor:wait}
+/* choc bar made of squares */
+.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:14px;background:#1b0d07;border-radius:16px;transform:rotate(-4deg);box-shadow:0 18px 0 #00000033}
+.bar i{aspect-ratio:1;border-radius:6px;background:linear-gradient(135deg,#6b3a22,#3d1f12);box-shadow:inset 3px 3px 0 #ffffff22,inset -3px -3px 0 #00000055}
+.bar i:nth-child(6){background:linear-gradient(135deg,#f6cf7a,var(--foil));display:grid;place-items:center;font:800 1rem Kanit;color:var(--cocoa);transform:translate(10px,-8px) rotate(8deg)}
+/* products */
+section{padding:64px 0}
+.sub{margin:8px 0 32px;max-width:52ch}
+h2{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.card{background:#fff;border:2px solid var(--cocoa);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{aspect-ratio:4/3;background:var(--milk);position:relative;display:grid;place-items:center}
+.thumb.dark{background:var(--cocoa)}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb span{font:800 3rem Kanit;color:var(--foil)}
+.card .body{padding:18px 20px 22px}
+.sku{font-size:.85rem;opacity:.7}
+.price{font:700 1.5rem Kanit;color:var(--berry);margin:6px 0}
+.qty{display:flex;align-items:center;gap:10px;margin-top:14px}
+.qty button{width:40px;height:40px;border-radius:50%;border:2px solid var(--cocoa);background:#fff;font-size:1.3rem;cursor:pointer}
+.qty button:hover{background:var(--foil)}
+.qty input{width:56px;text-align:center;font-size:1.1rem;padding:8px;border:2px solid var(--cocoa);border-radius:8px}
+/* order form */
+#order{background:var(--foil)}
+form{background:var(--paper);border:2px solid var(--cocoa);border-radius:14px;padding:28px;max-width:680px}
+label{display:block;font-weight:600;margin:14px 0 4px}
+input[type=text],input[type=tel],textarea{width:100%;font:inherit;padding:12px;border:2px solid var(--cocoa);border-radius:8px;background:#fff}
+.sum{margin:20px 0;padding:14px;border:2px dashed var(--cocoa);border-radius:8px;font-weight:600}
+.sum b{font:700 1.4rem Kanit;color:var(--berry)}
+#msg{margin-top:16px;font-weight:600}
+#msg.ok{color:#1b7a3a}#msg.err{color:#b3261e}
+footer{background:var(--cocoa);color:var(--paper);padding:28px 0;text-align:center;font-size:.9rem}
+@media(max-width:760px){.hero .wrap{grid-template-columns:1fr}.bar{max-width:320px;margin:0 auto}}
+@media(prefers-reduced-motion:no-preference){.bar{animation:wob 1.2s ease-out 1}@keyframes wob{from{transform:rotate(-14deg) translateY(30px);opacity:0}}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="brand">Cocoa Block</div>
+      <h1>ช็อกโกแลตแท่ง<br>หักแล้วหอมทั้งห้อง</h1>
+      <p>เมล็ดโกโก้คั่วเอง ทำเป็นแท่งหนา หักง่าย ละลายในปากช้าๆ มี 2 รสให้เลือก</p>
+      <a class="btn" href="#order">สั่งซื้อเลย</a>
+    </div>
+    <div class="bar" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i>70%</i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+  </div>
+</header>
+
+<section id="products">
+  <div class="wrap">
+    <h2>เลือกรสที่ชอบ</h2>
+    <p class="sub">แท่งละ 50 กรัม ส่งทั่วประเทศ ใช้เวลาแพ็ค 1–2 วันทำการ</p>
+    <div class="grid" id="cards"></div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <h2>กรอกที่อยู่จัดส่ง</h2>
+    <p class="sub">เลือกจำนวนด้านบน แล้วกรอกข้อมูลให้ครบเพื่อจ่าหน้าพัสดุได้ถูกต้อง</p>
+    <form id="f">
+      <label for="name">ชื่อผู้รับ</label>
+      <input type="text" id="name" required autocomplete="name">
+      <label for="phone">เบอร์โทร</label>
+      <input type="tel" id="phone" required pattern="0[0-9]{8,9}" inputmode="numeric" placeholder="0812345678" autocomplete="tel">
+      <label for="addr">ที่อยู่จัดส่ง (บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์)</label>
+      <textarea id="addr" rows="3" required autocomplete="street-address"></textarea>
+      <label for="note">หมายเหตุ (ถ้ามี)</label>
+      <input type="text" id="note">
+      <div class="sum" id="sum">ยังไม่ได้เลือกสินค้า</div>
+      <button class="btn" id="submit" type="submit">ยืนยันสั่งซื้อ</button>
+      <div id="msg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer>© Cocoa Block · งานฝึกสร้างแลนดิ้งเพจ</footer>
+
+<script>
+// ===== ตั้งค่า =====
+const API_URL = "https://script.google.com/macros/s/AKfycbzndFujC_LRUqyKbx1XU8x513vyO8kierBLRxyY4jltCKvD0oKbT9u_oZUzIF5I2HryQA/exec";
+const PRODUCTS = [
+  {sku:"DK70", name:"ดาร์กช็อก 70%",     desc:"เข้ม หอมโกโก้ ขมนิดๆ ปิดท้ายหวานบาง", price:89, img:["dark70.jpg","dark70.jpeg","dark70.png","dark70.webp"], dark:true},
+  {sku:"MK-HZ",name:"มิลค์เฮเซลนัท",      desc:"นุ่ม หวานมัน เคี้ยวเจอเฮเซลนัทอบกรอบ",  price:99, img:["milk-hazelnut.jpg","milk-hazelnut.jpeg","milk-hazelnut.png","milk-hazelnut.webp"]}
+];
+// ===================
+// ลองไฟล์รูปใน images/ ตามลำดับ (jpg > jpeg > png > webp) ถ้าไม่เจอ ใช้รูปที่ฝังไว้ในไฟล์นี้
+const FALLBACK = {
+  "DK70":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNmIzYTIyIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjM2QxZjEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMmExNjBlIi8+CjxyZWN0IHg9IjU4IiB5PSI4MyIgd2lkdGg9IjI4NCIgaGVpZ2h0PSIxOTgiIHJ4PSIxNiIgZmlsbD0iIzFiMGQwNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTMgMjAwIDE4MikiLz4KPGcgdHJhbnNmb3JtPSJyb3RhdGUoLTMgMjAwIDE4MikiPjxyZWN0IHg9IjcwIiB5PSI5NSIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik03NiAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxMzIiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTEzOCAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxOTQiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTIwMCAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyNTYiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTI2MiAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSI3MCIgeT0iMTU3IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTc2IDE2M2g0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjEzMiIgeT0iMTU3IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTEzOCAxNjNoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxOTQiIHk9IjE1NyIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0yMDAgMTYzaDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMjU2IiB5PSIxNTciIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNMjYyIDE2M2g0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjcwIiB5PSIyMTkiIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNNzYgMjI1aDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMTMyIiB5PSIyMTkiIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNMTM4IDIyNWg0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjE5NCIgeT0iMjE5IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTIwMCAyMjVoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyNTYiIHk9IjIxOSIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0yNjIgMjI1aDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPgo8cmVjdCB4PSIzMCIgeT0iMzAiIHdpZHRoPSIxNTAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjZTliNDRjIi8+Cjx0ZXh0IHg9IjEwNSIgeT0iNTciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iODAwIiBmb250LXNpemU9IjIwIiBmaWxsPSIjMmExNjBlIj5EQVJLIDcwJTwvdGV4dD4KPHRleHQgeD0iMjAwIiB5PSIyOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjAiIGZpbGw9Im5vbmUiPmRhcms8L3RleHQ+Cjwvc3ZnPg==",
+  "MK-HZ":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMzAwIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYjk3NDNmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGE0YjJhIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjOGE0YjJhIi8+CjxyZWN0IHg9IjU4IiB5PSI4MyIgd2lkdGg9IjI4NCIgaGVpZ2h0PSIxOTgiIHJ4PSIxNiIgZmlsbD0iIzFiMGQwNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTMgMjAwIDE4MikiLz4KPGcgdHJhbnNmb3JtPSJyb3RhdGUoLTMgMjAwIDE4MikiPjxyZWN0IHg9IjcwIiB5PSI5NSIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik03NiAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxMzIiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTEzOCAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxOTQiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTIwMCAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyNTYiIHk9Ijk1IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTI2MiAxMDFoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSI3MCIgeT0iMTU3IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTc2IDE2M2g0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjEzMiIgeT0iMTU3IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTEzOCAxNjNoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxOTQiIHk9IjE1NyIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0yMDAgMTYzaDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMjU2IiB5PSIxNTciIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNMjYyIDE2M2g0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjcwIiB5PSIyMTkiIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNNzYgMjI1aDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMTMyIiB5PSIyMTkiIHdpZHRoPSI1NiIgaGVpZ2h0PSI1NiIgcng9IjciIGZpbGw9InVybCgjZykiLz48cGF0aCBkPSJNMTM4IDIyNWg0NCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utb3BhY2l0eT0iLjE4IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjE5NCIgeT0iMjE5IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSI3IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTIwMCAyMjVoNDQiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xOCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIyNTYiIHk9IjIxOSIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNyIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0yNjIgMjI1aDQ0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1vcGFjaXR5PSIuMTgiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPgo8cmVjdCB4PSIzMCIgeT0iMzAiIHdpZHRoPSIxNTAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjZjZjZjdhIi8+Cjx0ZXh0IHg9IjEwNSIgeT0iNTciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iODAwIiBmb250LXNpemU9IjIwIiBmaWxsPSIjMmExNjBlIj5NSUxLIEhBWkVMTlVUPC90ZXh0Pgo8dGV4dCB4PSIyMDAiIHk9IjI5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMCIgZmlsbD0ibm9uZSI+bWlsazwvdGV4dD4KPC9zdmc+"
+};
+function nextImg(el){
+  const list=el.dataset.srcs.split("|"), i=Number(el.dataset.i)+1;
+  if(i<list.length){el.dataset.i=i; el.src="images/"+list[i];}
+  else if(!el.dataset.fb){el.dataset.fb=1; el.src=FALLBACK[el.dataset.sku];}
+  else el.remove();
+}
+const qty = {}; PRODUCTS.forEach(p=>qty[p.sku]=0);
+const $ = s=>document.querySelector(s);
+
+$("#cards").innerHTML = PRODUCTS.map(p=>`
+  <article class="card">
+    <div class="thumb ${p.dark?'dark':''}"><span>${p.sku}</span>
+      <img src="images/${p.img[0]}" data-srcs="${p.img.join('|')}" data-i="0" data-sku="${p.sku}" alt="${p.name}" onerror="nextImg(this)"></div>
+    <div class="body">
+      <div class="sku">รหัสสินค้า ${p.sku}</div>
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <div class="price">${p.price} บาท</div>
+      <div class="qty">
+        <button type="button" data-sku="${p.sku}" data-d="-1" aria-label="ลดจำนวน ${p.name}">−</button>
+        <input type="text" id="q-${p.sku}" value="0" readonly aria-label="จำนวน ${p.name}">
+        <button type="button" data-sku="${p.sku}" data-d="1" aria-label="เพิ่มจำนวน ${p.name}">+</button>
+      </div>
+    </div>
+  </article>`).join("");
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-sku]"); if(!b) return;
+  const s=b.dataset.sku; qty[s]=Math.max(0,Math.min(20,qty[s]+Number(b.dataset.d)));
+  $("#q-"+s).value=qty[s]; render();
+});
+
+function items(){return PRODUCTS.filter(p=>qty[p.sku]>0).map(p=>({sku:p.sku,name:p.name,qty:qty[p.sku],price:p.price}))}
+function total(){return items().reduce((t,i)=>t+i.qty*i.price,0)}
+function render(){
+  const it=items();
+  $("#sum").innerHTML = it.length
+    ? it.map(i=>`${i.name} × ${i.qty}`).join("<br>")+`<br>ยอดรวม <b>${total()}</b> บาท`
+    : "ยังไม่ได้เลือกสินค้า";
+}
+
+$("#f").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const m=$("#msg"); m.className=""; 
+  if(!items().length){m.className="err";m.textContent="กรุณาเลือกสินค้าอย่างน้อย 1 แท่ง";return}
+  const data={name:$("#name").value.trim(),phone:$("#phone").value.trim(),address:$("#addr").value.trim(),
+              note:$("#note").value.trim(),items:items(),total:total()};
+  const btn=$("#submit"); btn.disabled=true; m.textContent="กำลังส่งออเดอร์...";
+  try{
+    // text/plain เพื่อเลี่ยง CORS preflight ของ Apps Script
+    const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+    const j=await r.json();
+    if(!j.ok) throw new Error(j.error||"unknown");
+    m.className="ok"; m.textContent="สั่งซื้อสำเร็จ เลขออเดอร์ "+j.orderId;
+    $("#f").reset(); PRODUCTS.forEach(p=>{qty[p.sku]=0;$("#q-"+p.sku).value=0}); render();
+  }catch(err){
+    m.className="err"; m.textContent="ส่งไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่ ("+err.message+")";
+  }finally{btn.disabled=false}
+});
+</script>
+</body>
+</html>
